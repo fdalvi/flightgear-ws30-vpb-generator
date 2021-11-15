@@ -1,0 +1,16 @@
+# Data files
+*.zip
+*.hdr
+*.tfw
+*.tif
+
+## Corine
+data/u2018_clc2018_v2020_20u1_raster100m/
+## SRTM
+data/readme.txt
+
+# macOS
+*.DS_Store
+
+# Output folder
+output

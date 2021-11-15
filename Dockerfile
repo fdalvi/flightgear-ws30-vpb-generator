@@ -13,9 +13,9 @@ RUN apt-get update && \
       libnvtt-dev
 
 RUN git clone --branch release/2.4 https://github.com/OSGeo/gdal.git
-WORKDIR /home/flightgear/build//gdal/gdal
+WORKDIR /home/flightgear/build/gdal/gdal
 RUN ./configure
-RUN make
+RUN make -j $(nproc)
 RUN make install
 
 WORKDIR /home/flightgear/build/
@@ -27,18 +27,18 @@ RUN cat /etc/apt/sources.list
 RUN apt-get update && apt-get build-dep -y openscenegraph
 WORKDIR OpenSceneGraph/build
 RUN cmake -D CMAKE_BUILD_TYPE="Release" -D CMAKE_CXX_FLAGS_RELEASE="-O3 -pipe" -D CMAKE_C_FLAGS_RELEASE="-O3 -pipe" -D CMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOLEAN="true" -G "Unix Makefiles" ..
-RUN make -j 3
+RUN make -j $(nproc)
 RUN make install
 
 WORKDIR /home/flightgear/build/
 RUN git clone https://github.com/openscenegraph/VirtualPlanetBuilder.git && cd VirtualPlanetBuilder && git checkout VirtualPlanetBuilder-1.0
 RUN mkdir VirtualPlanetBuilder/build/
-WORKDIR /home/flightgear/build//VirtualPlanetBuilder/build/
+WORKDIR /home/flightgear/build/VirtualPlanetBuilder/build/
 RUN cmake ..
-RUN make -j 3
+RUN make -j $(nproc)
 RUN make install
 
 WORKDIR /home/flightgear/
 ENV LD_LIBRARY_PATH /usr/local/lib64:/usr/local/lib
 
-CMD ["bash", "./data/run.sh"]
+CMD ["/bin/bash"]
