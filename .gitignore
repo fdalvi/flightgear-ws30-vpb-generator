@@ -14,3 +14,6 @@ data/readme.txt
 
 # Output folder
 output
+
+# build dir
+build
