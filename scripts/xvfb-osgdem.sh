@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-xvfb-run /usr/local/bin/osgdem $@
+exec xvfb-run /usr/local/bin/osgdem "$@"
