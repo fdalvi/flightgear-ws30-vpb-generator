@@ -8,4 +8,4 @@ docker run \
  --mount "type=bind,source=`pwd`/data,target=${BASE_DIR}/data,readonly" \
  --mount "type=bind,source=`pwd`/output,target=${BASE_DIR}/output" \
  -it \
- flightgear/ws30-vbp-generator:latest /bin/bash $1
+ flightgear/ws30-vbp-generator:v1.3 /bin/bash $1

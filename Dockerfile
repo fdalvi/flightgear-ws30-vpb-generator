@@ -54,7 +54,7 @@ LABEL description="FlightGear WS30 VPB tools"
 
 RUN true && \
     apt-get update && \
-    apt-get install -y libgl1 libfontconfig libnvtt-dev libproj-dev python3 python3-pip && \
+    apt-get install -y libgl1 libfontconfig libnvtt-dev libproj-dev python3 python3-pip xvfb && \
     rm -rf /var/lib/apt/lists/* && \
     groupadd --gid 1000 flightgear && useradd --uid 1000 --gid flightgear --create-home --home-dir=/home/flightgear --shell=/bin/bash flightgear
 
@@ -70,6 +70,9 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 USER flightgear
 RUN pip install -r scripts/requirements.txt
 
+COPY scripts/xvfb-osgdem.sh /home/flightgear/bin/osgdem
+
+ENV PATH "/home/flightgear/bin:$PATH"
 ENV LD_LIBRARY_PATH /usr/lib64:/usr/lib
 ENV GDAL_DATA /usr/local/share
 
