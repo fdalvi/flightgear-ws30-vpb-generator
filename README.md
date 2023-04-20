@@ -7,7 +7,7 @@ This repository provides a DockerFile that can generate an image to build VPB te
 * OpenSceneGraph 3.6.5
 * VirtualPlanetBuilder 1.0
 
-The image is available on [Docker Hub](https://hub.docker.com/r/flightgear/ws30-vbp-generator/), so docker will download it automatically when it is requested for the first time.
+The image is available on [Docker Hub](https://hub.docker.com/r/flightgear/ws30-vpb-generator/), so docker will download it automatically when it is requested for the first time.
 
 ## Building terrain
 The provided `run_image.sh` will launch a container and present a `bash` prompt with the environment for building all set up:
@@ -29,4 +29,4 @@ A shorthand for steps 3-4 is also available:
 ```
 
 ## Building Image locally
-To build the image locally for debugging or contributing, run `build_image.sh`. This will build and tag the image with the name `flightgear/ws30-vbp-generator:v1`.
+To build the image locally for debugging or contributing, run `build_image.sh`. This will build and tag the image with the name `flightgear/ws30-vpb-generator:v1.3`.
