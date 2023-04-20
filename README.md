@@ -29,4 +29,4 @@ A shorthand for steps 3-4 is also available:
 ```
 
 ## Building Image locally
-To build the image locally for debugging or contributing, run `build_image.sh`. This will build and tag the image with the name `flightgear/ws30-vpb-generator:v1.3`.
+To build the image locally for debugging or contributing, run `build_image.sh`. This will build and tag the image with the name `flightgear/ws30-vpb-generator:v1.4`.
