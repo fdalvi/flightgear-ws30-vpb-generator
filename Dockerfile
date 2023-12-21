@@ -10,15 +10,31 @@ RUN apt-get update && \
       git \
       libnvtt-dev
 
+RUN apt-get install -y autotools-dev automake
+RUN apt-get install -y proj-bin libproj-dev
+
 RUN useradd --create-home --home-dir=/home/flightgear --shell=/bin/false flightgear
 USER flightgear
 
+RUN mkdir /home/flightgear/build/
+
 WORKDIR /home/flightgear/build/
 ARG INSTALLPREFIX=/home/flightgear/dist
+ARG GDAL_INSTALLPREFIX=/home/flightgear/gdal_3.4.1
 
-RUN git clone --branch release/2.4 https://github.com/OSGeo/gdal.git
-WORKDIR /home/flightgear/build/gdal/gdal
+# gdal 2.4 required by VirtualPlanetBuilder
+RUN git clone --branch release/2.4 https://github.com/OSGeo/gdal.git gdal_2.4
+WORKDIR /home/flightgear/build/gdal_2.4/gdal
 RUN ./configure --prefix=${INSTALLPREFIX}
+RUN make -j $(nproc)
+RUN make install
+
+# gdal 3.4.1 required for the python gdal tools, used by genVPB.py.
+WORKDIR /home/flightgear/build/
+RUN git clone --branch v3.4.1 https://github.com/OSGeo/gdal.git gdal_3.4.1
+WORKDIR /home/flightgear/build/gdal_3.4.1/gdal
+RUN ./autogen.sh
+RUN ./configure --prefix=${GDAL_INSTALLPREFIX}
 RUN make -j $(nproc)
 RUN make install
 
@@ -63,12 +79,21 @@ COPY --from=build /home/flightgear/dist/bin/* /usr/local/bin/
 COPY --from=build /home/flightgear/dist/share/* /usr/local/share/
 COPY --from=build /home/flightgear/dist/lib/* /usr/lib/
 COPY --from=build /home/flightgear/dist/lib64/* /usr/lib64/
+# GDAL 3.4.1 copied across afterwards, as it needs to be installed over gdal 2.4.1
+COPY --from=build /home/flightgear/gdal_3.4.1/include/* /usr/include/
+COPY --from=build /home/flightgear/gdal_3.4.1/bin/* /usr/local/bin/
+COPY --from=build /home/flightgear/gdal_3.4.1/share/* /usr/local/share/
+COPY --from=build /home/flightgear/gdal_3.4.1/lib/* /usr/lib/
 COPY --from=build /home/flightgear/fgmeta/ws30 /home/flightgear/scripts
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
+
 USER flightgear
 RUN pip install -r scripts/requirements.txt
+# gdal doesn't install well with build isolation, so is installed explicity
+RUN pip install -U setuptools wheel
+RUN pip install --no-build-isolation --no-cache-dir --force-reinstall gdal==3.4.1
 
 COPY scripts/xvfb-osgdem.sh /home/flightgear/bin/osgdem
 
