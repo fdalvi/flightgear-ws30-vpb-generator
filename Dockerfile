@@ -30,8 +30,8 @@ RUN make install
 WORKDIR /home/flightgear/build/
 RUN git clone --branch v3.4.1 https://github.com/OSGeo/gdal.git gdal_3.4.1
 USER root
-RUN apt-get install -y autotools-dev automake
-RUN apt-get install -y proj-bin libproj-dev
+RUN apt-get update && apt-get install -y autotools-dev automake
+RUN apt-get update && apt-get install -y proj-bin libproj-dev
 USER flightgear
 WORKDIR /home/flightgear/build/gdal_3.4.1/gdal
 RUN ./autogen.sh
@@ -69,9 +69,11 @@ LABEL maintainer="Fahim Dalvi"
 LABEL version="1"
 LABEL description="FlightGear WS30 VPB tools"
 
+ENV TZ=Europe/London
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN true && \
     apt-get update && \
-    apt-get install -y libgl1 libfontconfig libnvtt-dev libproj-dev python3 python3-pip xvfb && \
+    apt-get install -y libgl1 libfontconfig libnvtt-dev libproj-dev python3 python3-pip xvfb imagemagick-6.q16 && \
     rm -rf /var/lib/apt/lists/* && \
     groupadd --gid 1000 flightgear && useradd --uid 1000 --gid flightgear --create-home --home-dir=/home/flightgear --shell=/bin/bash flightgear
 
