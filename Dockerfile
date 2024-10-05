@@ -73,7 +73,7 @@ ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN true && \
     apt-get update && \
-    apt-get install -y libgl1 libfontconfig libnvtt-dev libproj-dev python3 python3-pip xvfb imagemagick-6.q16 zip && \
+    apt-get install -y libgl1 libfontconfig libnvtt-dev libproj-dev python3 python3-pip xvfb imagemagick-6.q16 zip wget && \
     rm -rf /var/lib/apt/lists/* && \
     groupadd --gid 1000 flightgear && useradd --uid 1000 --gid flightgear --create-home --home-dir=/home/flightgear --shell=/bin/bash flightgear
 
