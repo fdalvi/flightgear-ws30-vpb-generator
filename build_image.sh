@@ -13,4 +13,4 @@ fi
 cd ..
 
 # Build docker image
-docker build . -t flightgear/ws30-vpb-generator:v1.7
+docker build . -t flightgear/ws30-vpb-generator:v2.0
