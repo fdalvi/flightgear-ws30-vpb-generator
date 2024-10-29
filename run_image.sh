@@ -9,5 +9,5 @@ docker run \
  --mount "type=bind,source=`pwd`/data,target=${BASE_DIR}/data,readonly" \
  --mount "type=bind,source=`pwd`/output,target=${BASE_DIR}/output" \
  -it \
- flightgear/ws30-vpb-generator:v2.0 /bin/bash $1
+ flightgear/ws30-vpb-generator:v2.1 /bin/bash $1
  
